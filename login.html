@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk - Nexo AI Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <style>
+        :root {
+            --primary: #007AFF;
+            --primary-light: #0A84FF;
+            --background: #F5F5F7;
+            --surface: #FFFFFF;
+            --text: #1D1D1F;
+            --text-secondary: #86868B;
+            --border: #D2D2D7;
+            --google: #DB4437;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dark-theme {
+            --background: #121212;
+            --surface: #1E1E1E;
+            --text: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --border: #383838;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.3s;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 30px 25px;
+            text-align: center;
+            color: white;
+        }
+        
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .login-header p {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .login-body {
+            padding: 30px 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background-color: var(--surface);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+        }
+        
+        .google-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: #5F6368;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .google-btn:hover {
+            background-color: #F8F9FA;
+        }
+        
+        .google-btn i {
+            margin-right: 10px;
+            color: var(--google);
+            font-size: 18px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .login-footer {
+            text-align: center;
+            padding: 0 25px 25px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .divider::before {
+            margin-right: 10px;
+        }
+        
+        .divider::after {
+            margin-left: 10px;
+        }
+        
+        .guest-mode {
+            text-align: center;
+            padding: 15px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+        
+        .guest-mode a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .error-message {
+            color: #FF3B30;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 10px 0;
+        }
+        
+        .loader:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: #5F6368; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 #5F6368, .5em 0 0 rgba(0,0,0,0); color: #5F6368; }
+            80%, 100% { text-shadow: .25em 0 0 #5F6368, .5em 0 0 #5F6368; color: #5F6368; }
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Masuk</h1>
+            <p>Gunakan akun Google atau email Anda</p>
+        </div>
+        
+        <div class="login-body">
+            <button id="google-signin" class="google-btn">
+                <i class="fab fa-google"></i>
+                Masuk dengan Google
+            </button>
+            
+            <div class="divider">atau</div>
+            
+            <div class="form-group">
+                <label for="email">Email atau nomor telepon</label>
+                <input type="email" id="email" class="form-control" placeholder="nama@example.com" required>
+                <div id="email-error" class="error-message">Email tidak valid atau tidak diperbolehkan</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Kata sandi</label>
+                <input type="password" id="password" class="form-control" placeholder="Masukkan kata sandi" required>
+                <div id="password-error" class="error-message">Kata sandi harus minimal 6 karakter</div>
+            </div>
+            
+            <button id="email-signin" class="submit-btn">Masuk</button>
+            
+            <div class="loader" id="loader">Memproses</div>
+            
+            <div class="login-footer">
+                <p>Lupa email? <a href="lupasandi.html">Lupa kata sandi?</a></p>
+                <p>Belum punya akun? <a href="daftar.html">Buat akun</a></p>
+            </div>
+            
+            <div class="guest-mode">
+                Bukan komputer Anda? <a href="#" id="guest-mode">Gunakan mode tamu</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaYukRUhFni0wIJcJ8dKHd67pIDV8N_6E",
+            authDomain: "ramzznotdev-e1b79.firebaseapp.com",
+            databaseURL: "https://ramzznotdev-e1b79-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "ramzznotdev-e1b79",
+            storageBucket: "ramzznotdev-e1b79.firebasestorage.app",
+            messagingSenderId: "246392219480",
+            appId: "1:246392219480:web:d903efeb238f130370272d",
+            measurementId: "G-4KG0B7ZSW3"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        
+        // DOM Elements
+        const googleSigninBtn = document.getElementById('google-signin');
+        const emailSigninBtn = document.getElementById('email-signin');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const emailError = document.getElementById('email-error');
+        const passwordError = document.getElementById('password-error');
+        const loader = document.getElementById('loader');
+        const guestModeBtn = document.getElementById('guest-mode');
+        
+        // Daftar domain email sementara untuk diblokir
+        const temporaryEmailDomains = [
+            'mailinator.com', '10minutemail.com', 'guerrillamail.com', 'tempmail.com',
+            'yopmail.com', 'getnada.com', 'throwawaymail.com', 'maildrop.cc', 'disposable.com',
+            'temp-mail.org', 'mail-temporaire.fr', 'trashmail.com', 'tempmailaddress.com',
+            'mailcatch.com', 'tempmailer.com', 'emailondeck.com', 'mytemp.email', 'fakemail.net',
+            'mailnesia.com', 'tempinbox.com', 'mailtizo.com', 'tempmail.io', 'mailnesia.com',
+            'mail-temporaire.fr', 'temp-mail.net', 'tempmaildemo.com', 'tempmaily.com'
+        ];
+        
+        // Cek apakah email adalah email sementara
+        function isTemporaryEmail(email) {
+            const domain = email.split('@')[1]?.toLowerCase();
+            if (!domain) return true;
+            return temporaryEmailDomains.includes(domain);
+        }
+        
+        // Validasi email
+        function validateEmail() {
+            const email = emailInput.value.trim();
+            if (!email) {
+                emailError.textContent = "Email tidak boleh kosong";
+                emailError.style.display = "block";
+                return false;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                emailError.textContent = "Format email tidak valid";
+                emailError.style.display = "block";
+                return false;
+            }
+            
+            if (isTemporaryEmail(email)) {
+                emailError.textContent = "Email sementara tidak diperbolehkan";
+                emailError.style.display = "block";
+                return false;
+            }
+            
+            emailError.style.display = "none";
+            return true;
+        }
+        
+        // Validasi password
+        function validatePassword() {
+            const password = passwordInput.value;
+            if (password.length < 6) {
+                passwordError.textContent = "Kata sandi harus minimal 6 karakter";
+                passwordError.style.display = "block";
+                return false;
+            }
+            
+            passwordError.style.display = "none";
+            return true;
+        }
+        
+        // Tampilkan loader
+        function showLoader() {
+            loader.style.display = "block";
+            emailSigninBtn.disabled = true;
+            googleSigninBtn.disabled = true;
+        }
+        
+        // Sembunyikan loader
+        function hideLoader() {
+            loader.style.display = "none";
+            emailSigninBtn.disabled = false;
+            googleSigninBtn.disabled = false;
+        }
+        
+        // Sign in dengan Google
+        googleSigninBtn.addEventListener('click', () => {
+            showLoader();
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Simpan informasi pengguna ke localStorage
+                    localStorage.setItem('user', JSON.stringify({
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        name: result.user.displayName,
+                        photo: result.user.photoURL
+                    }));
+                    
+                    // Redirect ke index.html
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    hideLoader();
+                    alert(`Error: ${error.message}`);
+                });
+        });
+        
+        // Sign in dengan email/password
+        emailSigninBtn.addEventListener('click', () => {
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            
+            if (!isEmailValid || !isPasswordValid) {
+                return;
+            }
+            
+            showLoader();
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Simpan informasi pengguna ke localStorage
+                    localStorage.setItem('user', JSON.stringify({
+                        uid: userCredential.user.uid,
+                        email: userCredential.user.email
+                    }));
+                    
+                    // Redirect ke index.html
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    hideLoader();
+                    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                        alert('Email atau kata sandi salah');
+                    } else {
+                        alert(`Error: ${error.message}`);
+                    }
+                });
+        });
+        
+        // Mode tamu
+        guestModeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.setItem('guestMode', 'true');
+            window.location.href = 'index.html';
+        });
+        
+        // Event listeners untuk validasi real-time
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('blur', validatePassword);
+        
+        // Cek tema dari localStorage
+        if (localStorage.getItem('chatTheme') === 'light') {
+            document.body.classList.add('light-theme');
+        } else if (localStorage.getItem('chatTheme') === 'dark') {
+            document.body.classList.remove('light-theme');
+        }
+    </script>
+</body>
+</html>

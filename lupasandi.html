@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lupa Kata Sandi - Nexo AI Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <style>
+        :root {
+            --primary: #007AFF;
+            --primary-light: #0A84FF;
+            --background: #F5F5F7;
+            --surface: #FFFFFF;
+            --text: #1D1D1F;
+            --text-secondary: #86868B;
+            --border: #D2D2D7;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .dark-theme {
+            --background: #121212;
+            --surface: #1E1E1E;
+            --text: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --border: #383838;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .reset-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--surface);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.3s;
+        }
+        
+        .reset-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 30px 25px;
+            text-align: center;
+            color: white;
+        }
+        
+        .reset-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .reset-header p {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .reset-body {
+            padding: 30px 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--text);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background-color: var(--surface);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .reset-footer {
+            text-align: center;
+            padding: 0 25px 25px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .reset-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .reset-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            background-color: #E6F7E6;
+            border: 1px solid #B7E4B7;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message p {
+            color: #2E7D32;
+            font-size: 14px;
+        }
+        
+        .error-message {
+            color: #FF3B30;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 10px 0;
+        }
+        
+        .loader:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: #5F6368; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 #5F6368, .5em 0 0 rgba(0,0,0,0); color: #5F6368; }
+            80%, 100% { text-shadow: .25em 0 0 #5F6368, .5em 0 0 #5F6368; color: #5F6368; }
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <div class="reset-container">
+        <div class="reset-header">
+            <h1>Lupa Kata Sandi</h1>
+            <p>Masukkan email Anda untuk mereset kata sandi</p>
+        </div>
+        
+        <div class="reset-body">
+            <div class="success-message" id="success-message">
+                <p>Kami telah mengirimkan tautan untuk mereset kata sandi ke email Anda. Silakan periksa kotak masuk (dan folder spam) Anda.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Alamat email</label>
+                <input type="email" id="email" class="form-control" placeholder="nama@example.com" required>
+                <div id="email-error" class="error-message">Email tidak valid</div>
+            </div>
+            
+            <button id="reset-btn" class="submit-btn">Kirim Tautan Reset</button>
+            
+            <div class="loader" id="loader">Memproses</div>
+            
+            <div class="reset-footer">
+                <p><a href="login.html">Kembali ke halaman masuk</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaYukRUhFni0wIJcJ8dKHd67pIDV8N_6E",
+            authDomain: "ramzznotdev-e1b79.firebaseapp.com",
+            databaseURL: "https://ramzznotdev-e1b79-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "ramzznotdev-e1b79",
+            storageBucket: "ramzznotdev-e1b79.firebasestorage.app",
+            messagingSenderId: "246392219480",
+            appId: "1:246392219480:web:d903efeb238f130370272d",
+            measurementId: "G-4KG0B7ZSW3"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // DOM Elements
+        const emailInput = document.getElementById('email');
+        const resetBtn = document.getElementById('reset-btn');
+        const emailError = document.getElementById('email-error');
+        const successMessage = document.getElementById('success-message');
+        const loader = document.getElementById('loader');
+        
+        // Validasi email
+        function validateEmail() {
+            const email = emailInput.value.trim();
+            if (!email) {
+                emailError.textContent = "Email tidak boleh kosong";
+                emailError.style.display = "block";
+                return false;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                emailError.textContent = "Format email tidak valid";
+                emailError.style.display = "block";
+                return false;
+            }
+            
+            emailError.style.display = "none";
+            return true;
+        }
+        
+        // Tampilkan loader
+        function showLoader() {
+            loader.style.display = "block";
+            resetBtn.disabled = true;
+        }
+        
+        // Sembunyikan loader
+        function hideLoader() {
+            loader.style.display = "none";
+            resetBtn.disabled = false;
+        }
+        
+        // Reset kata sandi
+        resetBtn.addEventListener('click', () => {
+            const isEmailValid = validateEmail();
+            
+            if (!isEmailValid) {
+                return;
+            }
+            
+            showLoader();
+            const email = emailInput.value;
+            
+            auth.sendPasswordResetEmail(email)
+                .then(() => {
+                    // Tampilkan pesan sukses
+                    successMessage.style.display = "block";
+                    emailInput.disabled = true;
+                    resetBtn.style.display = "none";
+                })
+                .catch((error) => {
+                    hideLoader();
+                    if (error.code === 'auth/user-not-found') {
+                        emailError.textContent = "Email tidak terdaftar";
+                        emailError.style.display = "block";
+                    } else {
+                        alert(`Error: ${error.message}`);
+                    }
+                });
+        });
+        
+        // Event listeners
+        emailInput.addEventListener('blur', validateEmail);
+        
+        // Cek tema dari localStorage
+        if (localStorage.getItem('chatTheme') === 'light') {
+            document.body.classList.add('light-theme');
+        } else if (localStorage.getItem('chatTheme') === 'dark') {
+            document.body.classList.remove('light-theme');
+        }
+    </script>
+</body>
+</html>
