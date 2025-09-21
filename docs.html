@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi - RamzzBotz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-robot"></i> RamzzBotz</h2>
+                <button class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-comment"></i> Chat
+                </a>
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </a>
+                <a href="profil.html" class="nav-item">
+                    <i class="fas fa-user"></i> Profil
+                </a>
+                <a href="pengaturan.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </a>
+                <a href="docs.html" class="nav-item active">
+                    <i class="fas fa-book"></i> Dokumentasi
+                </a>
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Dokumentasi</h1>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="docs-content">
+                <div class="docs-sidebar">
+                    <h3>Daftar Isi</h3>
+                    <ul class="docs-menu">
+                        <li><a href="#pengenalan" class="docs-link active">Pengenalan</a></li>
+                        <li><a href="#cara-kerja" class="docs-link">Cara Kerja</a></li>
+                        <li><a href="#model-ai" class="docs-link">Model AI</a></li>
+                        <li><a href="#api-key" class="docs-link">Mengatur API Key</a></li>
+                        <li><a href="#fitur-unggulan" class="docs-link">Fitur Unggulan</a></li>
+                        <li><a href="#kode-contoh" class="docs-link">Contoh Kode</a></li>
+                        <li><a href="#faq" class="docs-link">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="docs-main">
+                    <section id="pengenalan" class="docs-section">
+                        <h2>Pengenalan RamzzBotz</h2>
+                        <p>RamzzBotz adalah asisten AI canggih yang dirancang untuk membantu Anda dalam berbagai tugas, mulai dari pemrograman, analisis data, hingga penulisan konten. Dibangun dengan teknologi AI terbaru dari Groq, RamzzBotz dapat memberikan respons yang cepat dan akurat.</p>
+                        
+                        <div class="feature-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h4>Cepat</h4>
+                                <p>Dibangun dengan teknologi Groq untuk kecepatan respons yang optimal</p>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h4>Pemrograman</h4>
+                                <p>Membantu menulis, debug, dan menjelaskan kode dalam berbagai bahasa</p>
+                            </div>
+                            
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-file"></i>
+                                </div>
+                                <h4>Analisis File</h4>
+                                <p>Membaca dan menganalisis berbagai jenis file teks</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section id="cara-kerja" class="docs-section">
+                        <h2>Cara Kerja</h2>
+                        <p>RamzzBotz menggunakan API dari Groq untuk mengakses model AI canggih seperti Llama 3. Saat Anda mengirim pesan, permintaan dikirim ke server Groq yang kemudian memproses dan mengembalikan respons.</p>
+                        
+                        <div class="code-block-container">
+                            <div class="code-header">
+                                <span class="code-language">Text</span>
+                                <button class="copy-code-btn">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <pre><code>1. Anda mengirim pesan atau file
+2. Sistem mengirim permintaan ke Groq API
+3. Model AI memproses permintaan
+4. Respons dikirim kembali ke aplikasi
+5. Hasil ditampilkan di antarmuka</code></pre>
+                        </div>
+                    </section>
+                    
+                    <section id="model-ai" class="docs-section">
+                        <h2>Model AI yang Didukung</h2>
+                        <p>RamzzBotz mendukung berbagai model AI melalui Groq API. Anda dapat memilih model yang sesuai dengan kebutuhan Anda melalui halaman Pengaturan.</p>
+                        
+                        <table class="docs-table">
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Kekuatan</th>
+                                    <th>Rekomendasi Untuk</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Llama 3</td>
+                                    <td>Seimbang, cepat</td>
+                                    <td>Penggunaan umum, pemrograman</td>
+                                </tr>
+                                <tr>
+                                    <td>GPT-4</td>
+                                    <td>Kreatif, pemahaman mendalam</td>
+                                    <td>Penulisan konten, analisis kompleks</td>
+                                </tr>
+                                <tr>
+                                    <td>Claude</td>
+                                    <td>Kontekstual, percakapan alami</td>
+                                    <td>Percakapan panjang, summarization</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                    <section id="api-key" class="docs-section">
+                        <h2>Mengatur API Key</h2>
+                        <p>Untuk menggunakan RamzzBotz, Anda perlu menyediakan API Key dari Groq. Berikut cara mendapatkannya:</p>
+                        
+                        <ol>
+                            <li>Kunjungi <a href="https://console.groq.com" target="_blank">Groq Console</a></li>
+                            <li>Buat akun atau login jika sudah memiliki akun</li>
+                            <li>Pergi ke halaman API Keys</li>
+                            <li>Buat API Key baru</li>
+                            <li>Salin key dan tempel di halaman Pengaturan di RamzzBotz</li>
+                        </ol>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <p>API Key Anda disimpan secara lokal di browser dan tidak dikirim ke server manapun. Ini menjamin privasi dan keamanan data Anda.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="fitur-unggulan" class="docs-section">
+                        <h2>Fitur Unggulan</h2>
+                        
+                        <h3>1. Pemrograman & Debugging</h3>
+                        <p>RamzzBotz dapat membantu menulis kode dalam berbagai bahasa pemrograman, menjelaskan konsep, dan membantu debugging.</p>
+                        
+                        <h3>2. Analisis File</h3>
+                        <p>Unggah file teks (kode, dokumen, dll) dan RamzzBotz akan menganalisis kontennya untuk membantu Anda.</p>
+                        
+                        <h3>3>Percakapan Kontekstual</h3>
+                        <p>RamzzBotz mengingat percakapan sebelumnya dalam sesi yang sama, memungkinkan interaksi yang lebih alami.</p>
+                        
+                        <h3>4.Antarmuka Responsif</h3>
+                        <p>Dapat diakses dari perangkat desktop maupun mobile dengan pengalaman yang optimal.</p>
+                    </section>
+                    
+                    <section id="kode-contoh" class="docs-section">
+                        <h2>Contoh Kode</h2>
+                        <p>Berikut adalah contoh bagaimana RamzzBotz dapat membantu menghasilkan kode:</p>
+                        
+                        <div class="code-block-container">
+                            <div class="code-header">
+                                <span class="code-language">JavaScript</span>
+                                <button class="copy-code-btn">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                            <pre><code>// Fungsi untuk menghitung faktorial
+function factorial(n) {
+    if (n === 0 || n === 1) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+// Contoh penggunaan
+console.log(factorial(5)); // Output: 120</code></pre>
+                        </div>
+                    </section>
+                    
+                    <section id="faq" class="docs-section">
+                        <h2>Pertanyaan Umum (FAQ)</h2>
+                        
+                        <div class="faq-item">
+                            <h3>Apakah RamzzBotz gratis?</h3>
+                            <p>RamzzBotz sendiri gratis, tetapi Anda perlu menyediakan API Key Groq Anda sendiri. Groq menawarkan paket gratis dengan limit tertentu.</p>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <h3>Bagaimana cara reset password?</h3>
+                            <p>Klik "Lupa password" di halaman login dan ikuti instruksi yang dikirim ke email Anda.</p>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <h3>Apakah data saya aman?</h3>
+                            <p>Ya, semua data disimpan secara lokal di browser Anda. API Key dan percakapan tidak dikirim ke server manapun kecuali ke Groq API.</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="docs.js"></script>
+</body>
+</html>

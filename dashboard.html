@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - RamzzBotz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-robot"></i> RamzzBotz</h2>
+                <button class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-comment"></i> Chat
+                </a>
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </a>
+                <a href="profil.html" class="nav-item">
+                    <i class="fas fa-user"></i> Profil
+                </a>
+                <a href="pengaturan.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </a>
+                <a href="docs.html" class="nav-item">
+                    <i class="fas fa-book"></i> Dokumentasi
+                </a>
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Dashboard</h1>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>245</h3>
+                            <p>Percakapan</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>128</h3>
+                            <p>Kode Dibuat</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>42</h3>
+                            <p>File Dianalisis</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>18.5</h3>
+                            <p>Jam Digunakan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <h3>Aktivitas Harian</h3>
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <h3>Jenis Permintaan</h3>
+                        <canvas id="requestTypeChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Aktivitas Terbaru</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="activity-details">
+                                <p>Membuat kode website HTML/CSS</p>
+                                <span>2 jam yang lalu</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-question"></i>
+                            </div>
+                            <div class="activity-details">
+                                <p>Menjawab pertanyaan tentang JavaScript</p>
+                                <span>5 jam yang lalu</span>
+                            </div>
+                        </div>
+                        
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-file"></i>
+                            </div>
+                            <div class="activity-details">
+                                <p>Menganalisis file Python</p>
+                                <span>Kemarin</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

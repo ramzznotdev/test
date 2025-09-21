@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - RamzzBotz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-robot"></i> RamzzBotz</h2>
+                <button class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-comment"></i> Chat
+                </a>
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </a>
+                <a href="profil.html" class="nav-item">
+                    <i class="fas fa-user"></i> Profil
+                </a>
+                <a href="pengaturan.html" class="nav-item active">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </a>
+                <a href="docs.html" class="nav-item">
+                    <i class="fas fa-book"></i> Dokumentasi
+                </a>
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </a>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="top-nav">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1>Pengaturan</h1>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="settings-content">
+                <div class="settings-section">
+                    <h3>Preferensi</h3>
+                    <div class="settings-options">
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Mode Gelap</h4>
+                                <p>Ubah tampilan menjadi mode gelap</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="darkModeToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Notifikasi</h4>
+                                <p>Aktifkan notifikasi untuk pembaruan</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="notificationsToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Bahasa</h4>
+                                <p>Pilih bahasa antarmuka</p>
+                            </div>
+                            <select id="languageSelect">
+                                <option value="id">Bahasa Indonesia</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Pengaturan AI</h3>
+                    <div class="settings-options">
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Model AI Default</h4>
+                                <p>Pilih model AI yang akan digunakan</p>
+                            </div>
+                            <select id="modelSelect">
+                                <option value="llama">Llama 3 (Default)</option>
+                                <option value="gpt">GPT-4</option>
+                                <option value="claude">Claude</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Suhu Respons</h4>
+                                <p>Kontrol kreativitas respons AI (nilai lebih tinggi = lebih kreatif)</p>
+                            </div>
+                            <input type="range" id="temperatureSlider" min="0" max="1" step="0.1" value="0.7">
+                            <span id="temperatureValue">0.7</span>
+                        </div>
+                        
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Panjang Maksimum Respons</h4>
+                                <p>Jumlah token maksimum untuk respons AI</p>
+                            </div>
+                            <select id="maxTokensSelect">
+                                <option value="512">512 token</option>
+                                <option value="1024" selected>1024 token</option>
+                                <option value="2048">2048 token</option>
+                                <option value="4096">4096 token</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>API Key</h3>
+                    <div class="api-key-settings">
+                        <div class="form-group">
+                            <label for="apiKey">Groq API Key</label>
+                            <input type="password" id="apiKey" placeholder="Masukkan API Key Groq Anda">
+                            <small>API key Anda disimpan secara lokal di browser dan tidak dikirim ke server manapun</small>
+                        </div>
+                        
+                        <div class="api-key-actions">
+                            <button class="save-button" id="saveApiKey">Simpan API Key</button>
+                            <button class="test-button" id="testApiKey">Test API Key</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Privasi & Data</h3>
+                    <div class="settings-options">
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Hapus Riwayat Chat</h4>
+                                <p>Hapus semua riwayat percakapan yang tersimpan</p>
+                            </div>
+                            <button class="danger-button" id="clearHistoryBtn">Hapus Riwayat</button>
+                        </div>
+                        
+                        <div class="setting-option">
+                            <div class="option-info">
+                                <h4>Ekspor Data</h4>
+                                <p>Unduh semua data Anda dalam format JSON</p>
+                            </div>
+                            <button class="secondary-button" id="exportDataBtn">Ekspor Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>

@@ -3,569 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - Nexo AI Chat</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <style>
-        :root {
-            --primary: #007AFF;
-            --primary-light: #0A84FF;
-            --background: #F5F5F7;
-            --surface: #FFFFFF;
-            --text: #1D1D1F;
-            --text-secondary: #86868B;
-            --border: #D2D2D7;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
-        
-        .dark-theme {
-            --background: #121212;
-            --surface: #1E1E1E;
-            --text: #FFFFFF;
-            --text-secondary: #A0A0A0;
-            --border: #383838;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--text);
-            min-height: 100vh;
-            padding-bottom: 60px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            padding: 25px 20px 40px;
-            color: white;
-            position: relative;
-        }
-        
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 24px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .profile-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            text-align: center;
-            margin-top: 10px;
-        }
-        
-        .profile-container {
-            max-width: 800px;
-            margin: -30px auto 0;
-            padding: 0 20px;
-        }
-        
-        .profile-card {
-            background-color: var(--surface);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            padding: 25px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .user-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 28px;
-            margin-right: 20px;
-            overflow: hidden;
-        }
-        
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .user-details h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .user-details p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-        
-        .profile-section {
-            padding: 20px;
-        }
-        
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 15px;
-            padding-left: 5px;
-        }
-        
-        .settings-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .settings-item:hover {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-        
-        .dark-theme .settings-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .settings-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background-color: rgba(0, 122, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: var(--primary);
-            font-size: 18px;
-        }
-        
-        .settings-content {
-            flex: 1;
-        }
-        
-        .settings-content h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 3px;
-        }
-        
-        .settings-content p {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        .settings-arrow {
-            color: var(--text-secondary);
-            font-size: 18px;
-        }
-        
-        .theme-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .theme-toggle:hover {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-        
-        .dark-theme .theme-toggle:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .theme-options {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .theme-option {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.2s;
-        }
-        
-        .theme-option.active {
-            border-color: var(--primary);
-        }
-        
-        .theme-option.light {
-            background: linear-gradient(135deg, #F5F5F7, #FFFFFF);
-        }
-        
-        .theme-option.dark {
-            background: linear-gradient(135deg, #121212, #1E1E1E);
-        }
-        
-        .theme-option.amoled {
-            background: #000000;
-        }
-        
-        .logout-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #FF3B30, #FF6B6B);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: opacity 0.3s;
-            margin-top: 10px;
-        }
-        
-        .logout-btn:hover {
-            opacity: 0.9;
-        }
-        
-        .share-section {
-            background-color: var(--surface);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: var(--shadow);
-            margin-top: 20px;
-        }
-        
-        .share-section h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        
-        .share-section p {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        
-        .share-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .share-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background-color: var(--surface);
-            color: var(--text);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .share-btn:hover {
-            background-color: rgba(0, 0, 0, 0.03);
-            transform: translateY(-2px);
-        }
-        
-        .dark-theme .share-btn:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .share-btn i {
-            font-size: 18px;
-        }
-        
-        .share-btn.whatsapp {
-            color: #25D366;
-            border-color: #25D366;
-        }
-        
-        .share-btn.telegram {
-            color: #0088CC;
-            border-color: #0088CC;
-        }
-        
-        .share-btn.copy {
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1000;
-        }
-        
-        .toast.show {
-            opacity: 1;
-        }
-    </style>
+    <title>Profil - RamzzBotz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="light-theme">
-    <div class="profile-header">
-        <button class="back-btn" id="back-btn"><i class="fas fa-arrow-left"></i></button>
-        <h1>Profil Saya</h1>
-    </div>
-    
-    <div class="profile-container">
-        <div class="profile-card">
-            <div class="user-info">
-                <div class="user-avatar" id="user-avatar">A</div>
-                <div class="user-details">
-                    <h2 id="user-name">Pengguna</h2>
-                    <p id="user-email">email@example.com</p>
-                </div>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-robot"></i> RamzzBotz</h2>
+                <button class="close-sidebar" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             
-            <div class="profile-section">
-                <div class="settings-item" id="share-chat">
-                    <div class="settings-icon">
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                    <div class="settings-content">
-                        <h3>Berbagi Chat</h3>
-                        <p>Bagikan riwayat chat Anda dengan orang lain</p>
-                    </div>
-                    <div class="settings-arrow">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-                
-                <div class="theme-toggle">
-                    <div>
-                        <div class="settings-content">
-                            <h3>Tema</h3>
-                            <p>Pilih tampilan yang nyaman untuk Anda</p>
-                        </div>
-                    </div>
-                    <div class="theme-options">
-                        <div class="theme-option light active" data-theme="light">
-                            <i class="fas fa-sun"></i>
-                        </div>
-                        <div class="theme-option dark" data-theme="dark">
-                            <i class="fas fa-moon"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <button class="logout-btn" id="logout-btn">
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-comment"></i> Chat
+                </a>
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </a>
+                <a href="profil.html" class="nav-item active">
+                    <i class="fas fa-user"></i> Profil
+                </a>
+                <a href="pengaturan.html" class="nav-item">
+                    <i class="fas fa-cog"></i> Pengaturan
+                </a>
+                <a href="docs.html" class="nav-item">
+                    <i class="fas fa-book"></i> Dokumentasi
+                </a>
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" id="logoutBtn">
                     <i class="fas fa-sign-out-alt"></i> Keluar
-                </button>
-            </div>
+                </a>
+            </nav>
         </div>
-        
-        <div class="share-section" id="share-section" style="display: none;">
-            <h2>Berbagi Chat</h2>
-            <p>Pilih platform untuk berbagi riwayat chat Anda. Anda dapat berbagi dengan teman atau menyimpannya untuk referensi masa depan.</p>
-            
-            <div class="share-buttons">
-                <button class="share-btn whatsapp">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
+
+        <div class="main-content">
+            <div class="top-nav">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <button class="share-btn telegram">
-                    <i class="fab fa-telegram"></i> Telegram
-                </button>
-                <button class="share-btn copy" id="copy-link-btn">
-                    <i class="fas fa-copy"></i> Salin Tautan
-                </button>
+                <h1>Profil Saya</h1>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="https://ui-avatars.com/api/?name=User&background=7c3aed&color=fff" alt="Avatar" id="avatarImage">
+                        <div class="avatar-overlay" id="avatarOverlay">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    </div>
+                    
+                    <div class="profile-info">
+                        <h2 id="userName">Nama Pengguna</h2>
+                        <p id="userEmail">user@example.com</p>
+                        <p class="member-since">Anggota sejak: <span id="joinDate">Januari 2023</span></p>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <h3>245</h3>
+                        <p>Percakapan</p>
+                    </div>
+                    <div class="profile-stat">
+                        <h3>18.5</h3>
+                        <p>Jam Digunakan</p>
+                    </div>
+                    <div class="profile-stat">
+                        <h3>42</h3>
+                        <p>File</p>
+                    </div>
+                </div>
+                
+                <div class="profile-form">
+                    <h3>Edit Profil</h3>
+                    <form id="profileForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profileName">Nama Lengkap</label>
+                                <input type="text" id="profileName" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="profileEmail">Email</label>
+                                <input type="email" id="profileEmail" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profileBio">Bio</label>
+                            <textarea id="profileBio" name="bio" rows="3" placeholder="Ceritakan sedikit tentang diri Anda"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="save-button">Simpan Perubahan</button>
+                    </form>
+                </div>
+                
+                <div class="profile-actions">
+                    <h3>Akun</h3>
+                    <div class="action-buttons">
+                        <button class="action-button" id="changePasswordBtn">
+                            <i class="fas fa-key"></i> Ubah Password
+                        </button>
+                        <button class="action-button danger" id="deleteAccountBtn">
+                            <i class="fas fa-trash"></i> Hapus Akun
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
-    <div class="toast" id="toast">Tautan telah disalin!</div>
 
-    <script>
-        // Inisialisasi Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyCaYukRUhFni0wIJcJ8dKHd67pIDV8N_6E",
-            authDomain: "ramzznotdev-e1b79.firebaseapp.com",
-            databaseURL: "https://ramzznotdev-e1b79-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "ramzznotdev-e1b79",
-            storageBucket: "ramzznotdev-e1b79.firebasestorage.app",
-            messagingSenderId: "246392219480",
-            appId: "1:246392219480:web:d903efeb238f130370272d",
-            measurementId: "G-4KG0B7ZSW3"
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-        
-        // DOM Elements
-        const backBtn = document.getElementById('back-btn');
-        const userAvatar = document.getElementById('user-avatar');
-        const userName = document.getElementById('user-name');
-        const userEmail = document.getElementById('user-email');
-        const shareChat = document.getElementById('share-chat');
-        const shareSection = document.getElementById('share-section');
-        const copyLinkBtn = document.getElementById('copy-link-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        const toast = document.getElementById('toast');
-        const themeOptions = document.querySelectorAll('.theme-option');
-        
-        // Cek status autentikasi
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                // Tampilkan informasi pengguna
-                const displayName = user.displayName || user.email.split('@')[0];
-                const email = user.email;
-                const photoURL = user.photoURL;
-                
-                userName.textContent = displayName;
-                userEmail.textContent = email;
-                
-                // Set avatar
-                if (photoURL) {
-                    userAvatar.innerHTML = `<img src="${photoURL}" alt="Avatar">`;
-                } else {
-                    const initials = displayName.match(/\b\w/g) || [];
-                    userAvatar.textContent = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-                }
-            } else {
-                // Jika tidak ada pengguna yang masuk, arahkan ke halaman login
-                window.location.href = 'login.html';
-            }
-        });
-        
-        // Event listeners
-        backBtn.addEventListener('click', () => {
-            window.history.back();
-        });
-        
-        shareChat.addEventListener('click', () => {
-            shareSection.style.display = shareSection.style.display === 'none' ? 'block' : 'none';
-        });
-        
-        // Salin tautan berbagi
-        copyLinkBtn.addEventListener('click', () => {
-            // Buat tautan berbagi unik
-            const userId = auth.currentUser.uid;
-            const shareLink = `${window.location.origin}/index.html?share=${userId}`;
-            
-            // Salin ke clipboard
-            navigator.clipboard.writeText(shareLink).then(() => {
-                showToast('Tautan telah disalin!');
-            }).catch(err => {
-                console.error('Gagal menyalin tautan:', err);
-                showToast('Gagal menyalin tautan');
-            });
-        });
-        
-        // Logout
-        logoutBtn.addEventListener('click', () => {
-            auth.signOut().then(() => {
-                // Hapus data lokal
-                localStorage.removeItem('user');
-                localStorage.removeItem('guestMode');
-                
-                // Redirect ke halaman login
-                window.location.href = 'login.html';
-            }).catch((error) => {
-                console.error('Error logging out:', error);
-                alert('Terjadi kesalahan saat keluar. Silakan coba lagi.');
-            });
-        });
-        
-        // Ubah tema
-        themeOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                // Hapus kelas active dari semua opsi
-                themeOptions.forEach(opt => opt.classList.remove('active'));
-                
-                // Tambahkan kelas active ke opsi yang dipilih
-                option.classList.add('active');
-                
-                // Simpan tema ke localStorage
-                const theme = option.dataset.theme;
-                localStorage.setItem('chatTheme', theme);
-                
-                // Terapkan tema
-                if (theme === 'light') {
-                    document.body.classList.add('light-theme');
-                    document.body.classList.remove('dark-theme');
-                } else if (theme === 'dark') {
-                    document.body.classList.remove('light-theme');
-                    document.body.classList.add('dark-theme');
-                }
-            });
-        });
-        
-        // Tampilkan toast
-        function showToast(message) {
-            toast.textContent = message;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
-        
-        // Inisialisasi tema
-        function initTheme() {
-            const savedTheme = localStorage.getItem('chatTheme') || 'light';
-            
-            // Set kelas pada body
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
-                document.body.classList.remove('dark-theme');
-                document.querySelector('.theme-option.light').classList.add('active');
-                document.querySelector('.theme-option.dark').classList.remove('active');
-            } else if (savedTheme === 'dark') {
-                document.body.classList.remove('light-theme');
-                document.body.classList.add('dark-theme');
-                document.querySelector('.theme-option.light').classList.remove('active');
-                document.querySelector('.theme-option.dark').classList.add('active');
-            }
-        }
-        
-        // Inisialisasi
-        initTheme();
-    </script>
+    <script src="profile.js"></script>
 </body>
 </html>
